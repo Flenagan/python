@@ -2,6 +2,7 @@ import pytest
 from television import Television
 
 @pytest.fixture
+
 def television():
     return Television()
 
@@ -86,6 +87,35 @@ def test_volume_up(television):
     #assert television._Television__volume == 0
 
 def test_volume_down(television):
+
+    #TV is powered off and volume is decreased.
+    assert television._Television__status == False
+    television.volume_down()
+    assert television._Television__volume == 0
+
+    #TV is on and volume decreased from MAX_VOLUME
+
+    television.power()
+    assert television._Television__status == True
+
+    television.volume_up()
+    television.volume_up()
+    assert television._Television__volume == 2
+
+    television.volume_down()
+    assert television._Television__volume == 1
+
+    #TV is on, it is muted, and volume is decreased.
+    television.mute()
+    assert television._Television__muted == True
+    television.volume_down()
+    assert television._Television__muted == False
+    assert television._Television__volume == 0
+
+    # TV is on and decreased past MIN_VOLUME (NEEDS FIXING)
+    # television.volume_down()
+    # assert television._Television__volume == 2
+
 
 
 
